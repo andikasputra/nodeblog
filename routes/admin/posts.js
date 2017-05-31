@@ -5,6 +5,7 @@ var path = require('path');
 var models = require('../../models');
 var Post = models.Post;
 var Category = models.Category;
+var User = models.User;
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -19,11 +20,13 @@ const upload = multer({storage});
 
 router.get('/', (req, res) => {
     Post.findAll({
-        include: [{
-            model: Category
-        }]
+        include: [
+            {model: Category},
+            {model: User}
+        ]
     }).then(posts => {
         console.log(posts);
+        console.log(posts[0].dataValues)
         res.render('admin/posts/index', {title: 'All Posts', posts});
     }).catch(err => {
         console.log(err);

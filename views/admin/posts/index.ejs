@@ -20,28 +20,19 @@
 							<th>Action</th>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>
-								<td>Ini Judul Tulisan</td>
-								<td>Pendidikan</td>
-								<td>Admin</td>
-								<td>20 Mei 2017</td>
-								<td>
-										<a href='' class='btn btn-warning btn-sm'>Edit</a>
-										<a href='' class='btn btn-default btn-sm'>Hapus</a>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>Hari Pendidikan Nasional</td>
-								<td>Pendidikan</td>
-								<td>Admin</td>
-								<td>2 Mei 2017</td>
-								<td>
-										<a href='' class='btn btn-warning btn-sm'>Edit</a>
-										<a href='' class='btn btn-default btn-sm'>Hapus</a>
-								</td>
-							</tr>
+							<% posts.map((post, index) => { %>
+								<tr>
+									<td><%= index+1 %></td>
+									<td><%= post.dataValues.title %></td>
+									<td><%= post.dataValues.Category.dataValues.name %></td>
+									<td><%= post.dataValues.User.dataValues.username %></td>
+									<td><%= post.dataValues.createdAt %></td>
+									<td>
+											<a href='' class='btn btn-warning btn-sm'>Edit</a>
+											<a href='' class='btn btn-default btn-sm'>Hapus</a>
+									</td>
+								</tr>
+							<% }) %>
 						</tbody>
 					</table>
 
