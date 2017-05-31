@@ -101,4 +101,12 @@ router.get('/login', function(req, res) {
 })
 router.post('/login', passport.authenticate('local-login', {successRedirect: '/', failureRedirect: '/auth/login'}))
 
+router.get('/logout', function(req, res) {
+    req.session.destroy(function(err) {
+        if (!err) {
+            res.redirect('/auth/login');
+        }
+    })
+})
+
 module.exports = router;

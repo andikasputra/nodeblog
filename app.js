@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var validator = require('express-validator');
 var env = require('dotenv').load();
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
+var admin = require('./routes/admin');
 
 var app = express();
 
@@ -31,8 +33,17 @@ app.use(session({secret: 'my secret', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(validator());
+
 app.use('/', index);
 app.use('/auth', auth);
+// app.use(function(req, res, next) {
+//   if (!req.isAuthenticated()) {
+//     return res.redirect('/auth/login')
+//   }
+//   return next();
+// })
+app.use('/admin', admin);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
