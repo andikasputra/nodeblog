@@ -68,4 +68,20 @@ router.put('/:id/edit', (req, res) => {
     })
 })
 
+router.get('/:id/delete', (req, res) => {
+    req.checkParams('id', 'category id must a number').isNumeric();
+    req.getValidationResult().then(result => {
+        if (!result.isEmpty()) {
+            console.log(result);
+        }
+
+        Category.destroy({where: {id: req.params.id}})
+            .then(category => {
+                res.redirect('/admin/categories');
+            }).catch(err => {
+                console.log(err);
+            })
+    })
+})
+
 module.exports = router;
