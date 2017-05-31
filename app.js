@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var validator = require('express-validator');
+var methodOverride = require('method-override');
 var env = require('dotenv').load();
 
 var index = require('./routes/index');
@@ -33,6 +34,7 @@ app.use(session({secret: 'my secret', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(methodOverride('_method'));
 app.use(validator());
 
 app.use('/', index);
