@@ -1,7 +1,21 @@
 var router = require('express').Router();
+var multer = require('multer');
+var path = require('path');
+
 var models = require('../../models');
 var Post = models.Post;
 var Category = models.Category;
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/image/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, req.body.title.replace(' ', '-').toLowerCase()+path.extname(file.originalname));
+    }
+})
+
+const upload = multer({storage});
 
 router.get('/', (req, res) => {
     Post.findAll({
@@ -23,6 +37,27 @@ router.get('/add', (req, res) => {
         }).catch(err => {
             console.log(err);
         })
+})
+
+router.post('/add', upload.single('image'), (req, res) => {
+    req.checkBody('title', 'Title is required').notEmpty();
+    req.getValidationResult().then(result => {
+        if (!result.isEmpty()) {
+            return console.log(result)
+        }
+        Post.create({
+            title: req.body.title,
+            CategoryId: req.body.categoryid,
+            content: req.body.content,
+            UserId: 3,
+            slug: req.body.title.replace(' ', '-').toLowerCase(),
+            image: !req.file ? 'placeholder.jpg' : req.file.filename,
+        }).then(post => {
+            res.redirect('/admin/posts')
+        }).catch(err => {
+            console.log(err)
+        })
+    })
 })
 
 module.exports = router;
