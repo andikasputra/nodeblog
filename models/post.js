@@ -1,11 +1,13 @@
 'use strict';
+var Category = require('./index').Category;
+
 module.exports = function(sequelize, DataTypes) {
   var Post = sequelize.define('Post', {
     title: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      category_id: {
+      CategoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -16,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
       content: {
         type: DataTypes.TEXT
       },
-      user_id: {
+      UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -37,6 +39,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        Post.belongsTo(models.Category);
+        Post.belongsTo(models.User);
       }
     }
   });

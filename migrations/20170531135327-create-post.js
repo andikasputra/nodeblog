@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      category_id: {
+      CategoryId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -23,7 +23,7 @@ module.exports = {
       content: {
         type: Sequelize.TEXT
       },
-      user_id: {
+      UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
