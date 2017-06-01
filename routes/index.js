@@ -22,4 +22,8 @@ router.get('/', function(req, res, next) {
 		})
 });
 
+router.get('/post/:slug', (req, res) => {
+	res.render('single', {title: 'test'})
+})
+
 module.exports = router;
