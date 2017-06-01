@@ -83,4 +83,17 @@ router.get('/:id/edit', (req, res) => {
     })
 })
 
+router.get('/:id/delete', (req, res) => {
+    req.checkParams('id', 'post id should be integer').isNumeric();
+    req.getValidationResult().then(result => {
+        if (!result.isEmpty()) {
+            return console.log(result)
+        }
+        Post.destroy({where: {id: req.params.id}})
+            .then(post => {
+                res.redirect('/admin/posts');
+            }).catch(err => console.log(err));
+    })
+})
+
 module.exports = router;
