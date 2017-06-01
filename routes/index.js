@@ -14,8 +14,6 @@ router.get('/', function(req, res, next) {
 						{model: User}
 				]
 		}).then(posts => {
-				console.log(posts);
-				console.log(posts[0].dataValues)
 				res.render('index', {title: 'All Posts', posts});
 		}).catch(err => {
 				console.log(err);
@@ -23,7 +21,18 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/post/:slug', (req, res) => {
-	res.render('single', {title: 'test'})
+	Post.findOne({
+		where: {
+			slug: req.params.slug
+		},
+		include: [
+			{model: Category},
+			{model: User}
+		]
+	}).then(post => {
+			res.render('single', {title: post.dataValues.title, post: post.dataValues})
+	}).catch(err => console.log(err))
 })
+
 
 module.exports = router;
