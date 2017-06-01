@@ -63,4 +63,24 @@ router.post('/add', upload.single('image'), (req, res) => {
     })
 })
 
+router.get('/:id/edit', (req, res) => {
+    req.checkParams('id', 'post id should be integer').isNumeric();
+    req.getValidationResult().then(result => {
+        if (!result.isEmpty()) {
+            return console.log(result)
+        }
+        Post.findById(req.params.id)
+            .then(post => {
+                Category.findAll()
+                    .then(categories => {
+                        res.render('admin/posts/edit', {title: 'Edit Post', post: post.dataValues, categories})
+                    }).catch(err => {
+                        console.log(err);
+                    })
+            }).catch(err => {
+                console.log(err)
+            })
+    })
+})
+
 module.exports = router;
