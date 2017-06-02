@@ -14,11 +14,15 @@ router.get('/', (req, res) => {
 			{model: User}
 		]
 	}).then(posts => {
-		res.render('index', {
-			title: 'All Posts', 
-			category: false, 
-			posts
-		});
+		Category.findAll()
+			.then(categories => {
+				res.render('index', {
+					title: 'All Posts', 
+					category: false,
+					categories,
+					posts
+				});
+			}).catch(err => console.log(err))
 	}).catch(err => {
 		console.log(err);
 	})
@@ -34,10 +38,14 @@ router.get('/post/:slug', (req, res) => {
 			{model: User}
 		]
 	}).then(post => {
-			res.render('single', {
-				title: post.dataValues.title, 
-				post: post.dataValues
-			})
+		Category.findAll()
+			.then(categories => {
+				res.render('single', {
+					title: post.dataValues.title, 
+					categories,
+					post: post.dataValues
+				})
+			}).catch(err => console.log(err))
 	}).catch(err => console.log(err))
 })
 
@@ -50,11 +58,15 @@ router.get('/category/:slug', (req, res) => {
 			{model: Post}
 		]
 	}).then(category => {
-		res.render('index', {
-			title: category.dataValues.name, 
-			category: category.dataValues, 
-			posts: category.dataValues.Posts
-		});
+		Category.findAll()
+		.then(categories => {
+			res.render('index', {
+				title: category.dataValues.name, 
+				category: category.dataValues, 
+				posts: category.dataValues.Posts,
+				categories
+			});
+		}).catch(err => console.log(err))
 	})
 })
 
