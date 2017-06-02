@@ -34,5 +34,19 @@ router.get('/post/:slug', (req, res) => {
 	}).catch(err => console.log(err))
 })
 
+router.get('/category/:slug', (req, res) => {
+	Category.findOne({
+		where: {
+			slug: req.params.slug
+		},
+		include: [
+			{model: Post}
+		]
+	}).then(category => {
+		console.log(category);
+		console.log(category.dataValues.Posts[0])
+		res.render('index', {title: category.dataValues.name, category: category.dataValues, posts: category.dataValues.Posts});
+	})
+})
 
 module.exports = router;

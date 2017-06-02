@@ -6,7 +6,7 @@
 				<figure>
 					<a href="/post/<%= post.dataValues.slug %>"><img src="/image/<%= post.dataValues.image %>" alt="Image" class="img-responsive"></a>
 				</figure>
-				<span class="fh5co-meta"><a href="/post/<%= post.dataValues.slug %>"><%= post.dataValues.Category.dataValues.name %></a></span>
+				<span class="fh5co-meta"><a href="/post/<%= (category) ? category.slug : post.dataValues.Category.slug %>"><%= (category) ? category.name : post.dataValues.Category.dataValues.name %></a></span>
 				<h2 class="fh5co-article-title"><a href="/post/<%= post.dataValues.slug %>"><%= post.dataValues.title %></a></h2>
 				<span class="fh5co-meta fh5co-date">March 6th, 2016</span>
 			</article>
