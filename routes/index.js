@@ -7,17 +7,21 @@ var Category = models.Category;
 var User = models.User;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-		Post.findAll({
-				include: [
-						{model: Category},
-						{model: User}
-				]
-		}).then(posts => {
-				res.render('index', {title: 'All Posts', posts});
-		}).catch(err => {
-				console.log(err);
-		})
+router.get('/', (req, res) => {
+	Post.findAll({
+		include: [
+			{model: Category},
+			{model: User}
+		]
+	}).then(posts => {
+		res.render('index', {
+			title: 'All Posts', 
+			category: false, 
+			posts
+		});
+	}).catch(err => {
+		console.log(err);
+	})
 });
 
 router.get('/post/:slug', (req, res) => {
@@ -30,7 +34,10 @@ router.get('/post/:slug', (req, res) => {
 			{model: User}
 		]
 	}).then(post => {
-			res.render('single', {title: post.dataValues.title, post: post.dataValues})
+			res.render('single', {
+				title: post.dataValues.title, 
+				post: post.dataValues
+			})
 	}).catch(err => console.log(err))
 })
 
@@ -43,9 +50,11 @@ router.get('/category/:slug', (req, res) => {
 			{model: Post}
 		]
 	}).then(category => {
-		console.log(category);
-		console.log(category.dataValues.Posts[0])
-		res.render('index', {title: category.dataValues.name, category: category.dataValues, posts: category.dataValues.Posts});
+		res.render('index', {
+			title: category.dataValues.name, 
+			category: category.dataValues, 
+			posts: category.dataValues.Posts
+		});
 	})
 })
 

@@ -34,6 +34,10 @@ module.exports = function(sequelize, DataTypes) {
       image: {
         type: DataTypes.STRING,
         defaultValue: 'placeholder.jpg'
+      },
+      date: {
+        type: DataTypes.DATE,
+        defaultValue: sequelize.fn('NOW')
       }
   }, {
     classMethods: {

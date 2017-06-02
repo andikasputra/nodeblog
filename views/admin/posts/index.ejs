@@ -26,7 +26,7 @@
 									<td><%= post.dataValues.title %></td>
 									<td><%= post.dataValues.Category.dataValues.name %></td>
 									<td><%= post.dataValues.User.dataValues.username %></td>
-									<td><%= post.dataValues.createdAt %></td>
+									<td><%= post.dataValues.date %></td>
 									<td>
 											<a href='/admin/posts/<%= post.dataValues.id %>/edit' class='btn btn-warning btn-sm'>Edit</a>
 											<a href='/admin/posts/<%= post.dataValues.id %>/delete' onclick="return confirm('Are you sure you want to delete this post?')" class='btn btn-default btn-sm'>Hapus</a>
