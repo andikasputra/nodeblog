@@ -39,6 +39,7 @@ app.use(methodOverride('_method'));
 app.use(validator());
 
 app.use('/', index);
+// app.get('/favicon.ico', (req, res) => res.sendStatus(404));
 app.use('/auth', auth);
 app.use(function(req, res, next) {
   if (!req.isAuthenticated()) {

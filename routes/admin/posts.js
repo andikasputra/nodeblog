@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         if (file)
-            cb(null, req.body.title.replace(/ |?/g, '-').toLowerCase()+path.extname(file.originalname));
+            cb(null, req.body.title.replace(/ /g, '-').toLowerCase()+path.extname(file.originalname));
     }
 })
 
@@ -68,7 +68,7 @@ router.post('/add', upload.single('image'), (req, res) => {
             CategoryId: req.body.categoryid,
             content: req.body.content,
             UserId: req.user.id,
-            slug: req.body.title.replace(/ |?/g, '-').toLowerCase(),
+            slug: req.body.title.replace(/ /g, '-').toLowerCase(),
             image: !req.file ? 'placeholder.jpg' : req.file.filename,
             date: req.body.date
         }).then(post => {

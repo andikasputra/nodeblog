@@ -10,6 +10,7 @@ Date.prototype.postDate = function() {
 	const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	return `${month[this.getMonth()]} ${this.getDate()}, ${this.getFullYear()}`
 }
+
 /* GET home page. */
 router.get('/', (req, res) => {
 	Post.findAll({
@@ -18,13 +19,17 @@ router.get('/', (req, res) => {
 			{model: User}
 		]
 	}).then(posts => {
+		const allPost = posts.map(post => {
+			post.dataValues.date = new Date(post.dataValues.date).postDate();
+			return post.dataValues
+		})
 		Category.findAll()
 			.then(categories => {
 				res.render('index', {
 					title: 'All Posts', 
 					category: false,
 					categories,
-					posts
+					posts: allPost
 				});
 			}).catch(err => console.log(err))
 	}).catch(err => {
@@ -42,6 +47,7 @@ router.get('/post/:slug', (req, res) => {
 			{model: User}
 		]
 	}).then(post => {
+		post.dataValues.date = new Date(post.dataValues.date).postDate();
 		Category.findAll()
 			.then(categories => {
 				res.render('single', {
@@ -62,12 +68,16 @@ router.get('/category/:slug', (req, res) => {
 			{model: Post}
 		]
 	}).then(category => {
+		const allPost = category.dataValues.Posts.map(post => {
+			post.dataValues.date = new Date(post.dataValues.date).postDate();
+			return post.dataValues;
+		})
 		Category.findAll()
 		.then(categories => {
 			res.render('index', {
 				title: category.dataValues.name, 
 				category: category.dataValues, 
-				posts: category.dataValues.Posts,
+				posts: allPost,
 				categories
 			});
 		}).catch(err => console.log(err))
