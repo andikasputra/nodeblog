@@ -6,6 +6,10 @@ var Post = models.Post;
 var Category = models.Category;
 var User = models.User;
 
+Date.prototype.postDate = function() {
+	const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	return `${month[this.getMonth()]} ${this.getDate()}, ${this.getFullYear()}`
+}
 /* GET home page. */
 router.get('/', (req, res) => {
 	Post.findAll({

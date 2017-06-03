@@ -37,28 +37,34 @@ passport.use('local-register', new localStrategy(
     },
 
     function(req, username, password, done) {
-        User.findOne({where: { username: username}})
-            .then(function(user) {
-                if (user) {
-                    return done(null, false, { message: 'username already taken'})
-                } else {
-                    var userpass = generateHash(password);
-                    var data = {
-                        username: username,
-                        email: req.body.email,
-                        fullname: req.body.fullname,
-                        password: userpass
-                    }
+        req.checkBody('confirmpassword', 'Password does not match').matches(req.body.password);
+        req.getValidationResult().then(result => {
+            if (!result.isEmpty()) {
+                return console.log(err)
+            }
+            User.findOne({where: { username: username}})
+                .then(function(user) {
+                    if (user) {
+                        return done(null, false, { message: 'username already taken'})
+                    } else {
+                        var userpass = generateHash(password);
+                        var data = {
+                            username: username,
+                            email: req.body.email,
+                            fullname: req.body.fullname,
+                            password: userpass
+                        }
 
-                    User.create(data)
-                        .then(function(newUser, created) {
-                            if (!newUser) {
-                                return done(null, false)
-                            }
-                            return done(null, newUser);
-                        })
-                }
-            })
+                        User.create(data)
+                            .then(function(newUser, created) {
+                                if (!newUser) {
+                                    return done(null, false)
+                                }
+                                return done(null, newUser);
+                            })
+                    }
+                }).catch(err => console.log(err))
+        })
     }
 ))
 
@@ -94,12 +100,12 @@ router.get('/register', function(req, res) {
   res.render('auth/register', {title: 'Register'})
 });
 
-router.post('/register', passport.authenticate('local-register', {successRedirect: '/', failureRedirect: '/auth/register'}));
+router.post('/register', passport.authenticate('local-register', {successRedirect: '/auth/login', failureRedirect: '/auth/register'}));
 
 router.get('/login', function(req, res) {
     res.render('auth/login', {title: 'Login'})
 })
-router.post('/login', passport.authenticate('local-login', {successRedirect: '/', failureRedirect: '/auth/login'}))
+router.post('/login', passport.authenticate('local-login', {successRedirect: '/admin/posts', failureRedirect: '/auth/login'}))
 
 router.get('/logout', function(req, res) {
     req.session.destroy(function(err) {

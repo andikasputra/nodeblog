@@ -40,12 +40,12 @@ app.use(validator());
 
 app.use('/', index);
 app.use('/auth', auth);
-// app.use(function(req, res, next) {
-//   if (!req.isAuthenticated()) {
-//     return res.redirect('/auth/login')
-//   }
-//   return next();
-// })
+app.use(function(req, res, next) {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/auth/login')
+  }
+  return next();
+})
 app.use('/admin', admin);
 app.use('/users', users);
 

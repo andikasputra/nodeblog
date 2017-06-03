@@ -25,6 +25,9 @@ Date.prototype.yyyymmdd = function() {
     if (mm < 10) {
         mm = '0' + mm;
     }
+    if (dd < 10) {
+        dd = '0' + dd
+    }
 
     return `${this.getFullYear()}-${mm}-${dd}`
 }
@@ -36,8 +39,9 @@ router.get('/', (req, res) => {
             {model: User}
         ]
     }).then(posts => {
-        console.log(posts);
-        console.log(posts[0].dataValues)
+        // console.log(posts);
+        // console.log(posts[0].dataValues)
+        console.log(req)
         res.render('admin/posts/index', {title: 'All Posts', posts});
     }).catch(err => {
         console.log(err);
@@ -63,7 +67,7 @@ router.post('/add', upload.single('image'), (req, res) => {
             title: req.body.title,
             CategoryId: req.body.categoryid,
             content: req.body.content,
-            UserId: 3,
+            UserId: req.user.id,
             slug: req.body.title.replace(/ |?/g, '-').toLowerCase(),
             image: !req.file ? 'placeholder.jpg' : req.file.filename,
             date: req.body.date
@@ -108,7 +112,7 @@ router.put('/:id/edit', upload.single('image'), (req, res) => {
             title: req.body.title,
             content: req.body.content,
             CategoryId: req.body.categoryid,
-            UserId: 3,
+            UserId: req.user.id,
             date: req.body.date,
             slug: req.body.title.replace(/ /g, '-').toLowerCase()
         }
